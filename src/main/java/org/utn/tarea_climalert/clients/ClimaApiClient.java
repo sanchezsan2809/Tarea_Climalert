@@ -1,19 +1,30 @@
 package org.utn.tarea_climalert.clients;
 
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.utn.tarea_climalert.dtos.ClimaResponse;
 
 @Service
 public class ClimaApiClient {
-    private static String API_KEY = "026694342d1e4336a0e235635263006";
-    private static String ubicacion = "CABA";
+    @Value("${weather.api.key}")
+    private String apiKey;
+
+    @Value("${weather.api.location}")
+    private String ubicacion;
+
+    @Value("${weather.api.base-url}")
+    private String baseUrl;
+
 
     private final RestClient restClient;
 
-    public ClimaApiClient(RestClient.Builder builder) {
+    public ClimaApiClient(RestClient.Builder builder,
+                          @Value("${weather.api.base-url}") String baseUrl) {
+
         this.restClient = builder
-                .baseUrl("https://api.weatherapi.com/v1")
+                .baseUrl(baseUrl)
                 .build();
     }
 
@@ -23,7 +34,7 @@ public class ClimaApiClient {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/current.json")
-                        .queryParam("key", API_KEY)
+                        .queryParam("key", apiKey)
                         .queryParam("q", ubicacion)
                         .build())
                 .retrieve()

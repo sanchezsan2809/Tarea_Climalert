@@ -1,5 +1,7 @@
 package org.utn.tarea_climalert.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.utn.tarea_climalert.clients.ClimaApiClient;
 import org.utn.tarea_climalert.clients.ClimaApiClient;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 
 @Service
 public class ClimaService {
+
+    private final Logger logger = LoggerFactory.getLogger(ClimaService.class);
     private final ClimaApiClient climaApiClient;
     private final RegistroClimaRepository repository;
 
@@ -20,19 +24,26 @@ public class ClimaService {
     }
 
     public void actualizarClima() {
-        log.info()
+
         try{
             ClimaResponse response = climaApiClient.obtenerClimaActual();
 
             if(response == null || response.current() == null){
-                throw new RuntimeException("No se pudo obtener el clima");
+                logger.error("WeatherAPI respondió sin datos.");
+                return;
             }
 
             RegistroClima registroClima = RegistroClima.from(response);
 
             repository.save(registroClima);
+
+            logger.info(
+                    "Clima registrado. Temp={}° Humedad={}%",
+                    registroClima.getTemperatura(),
+                    registroClima.getHumedad()
+            );
         }catch(Exception e){
-            throw new RuntimeException("No se pudo obtener el clima");
+            logger.error("Error consultando WeatherAPI", e);
         }
 
 

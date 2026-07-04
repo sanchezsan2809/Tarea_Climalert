@@ -4,22 +4,22 @@ import org.springframework.stereotype.Repository;
 import org.utn.tarea_climalert.dtos.ClimaResponse;
 import org.utn.tarea_climalert.entities.RegistroClima;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class RegistroClimaRepository {
-    private final Map<Long, RegistroClima> registros;
-    static long id;
+    private final List<RegistroClima> registros = new ArrayList<>();
 
-
-    public RegistroClimaRepository() {
-        this.registros = new HashMap<>();
-        this.id = 0;
+    public void save(RegistroClima registro){
+        registros.add(registro);
     }
 
-    public void save(RegistroClima response) {
-        registros.put(id,  response);
-        id++;
+    public RegistroClima ultimo(){
+        if(registros.isEmpty()){
+            return null;
+        }
+
+        return registros.getLast();
     }
 }
