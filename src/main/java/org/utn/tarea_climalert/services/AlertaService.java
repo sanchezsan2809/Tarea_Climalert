@@ -50,6 +50,6 @@ public class AlertaService {
     }
 
     private Boolean alerta(RegistroClima registroClima) {
-        return registroClima.getTemperatura() > 35 || registroClima.getTemperatura() > 60;
+        return registroClima.getTemperatura() > 35 || registroClima.getHumedad() > 60;
     }
 }
