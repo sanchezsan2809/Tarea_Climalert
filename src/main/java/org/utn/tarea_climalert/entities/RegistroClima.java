@@ -15,6 +15,8 @@ public class RegistroClima{
     private final double velocidadViento;
     private final double presion;
     private final String condicion;
+    @Setter
+    private boolean alertaNotificada;
 
     public RegistroClima(LocalDateTime fechaObtencion, double temperatura, int humedad, double sensacionTermica, double velocidadViento, double presion, String condicion) {
         this.fechaObtencion = fechaObtencion;
@@ -24,6 +26,7 @@ public class RegistroClima{
         this.velocidadViento = velocidadViento;
         this.presion = presion;
         this.condicion = condicion;
+        this.alertaNotificada = false;
     }
 
     public static RegistroClima from(ClimaResponse response){

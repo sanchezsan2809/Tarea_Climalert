@@ -26,7 +26,17 @@ public class EmailService {
 
         mensaje.setSubject("Alerta meteorológica");
 
-        String cuerpo = """
+        String cuerpo = construirMensaje(clima);
+
+        mensaje.setText(cuerpo);
+
+        mensaje.setFrom("santiasanchez@frba.utn.edu.ar");
+
+        mailSender.send(mensaje);
+    }
+
+    private String construirMensaje(RegistroClima clima){
+        return """
         Se detectó una alerta meteorológica.
 
         Fecha: %s
@@ -46,9 +56,5 @@ public class EmailService {
                 clima.getVelocidadViento(),
                 clima.getCondicion()
         );
-
-        mensaje.setText(cuerpo);
-
-        mailSender.send(mensaje);
     }
 }

@@ -20,10 +20,9 @@ public class ClimaApiClient {
 
     private final RestClient restClient;
 
-    public ClimaApiClient(RestClient.Builder builder,
-                          @Value("${weather.api.base-url}") String baseUrl) {
+    public ClimaApiClient(@Value("${weather.api.base-url}") String baseUrl) {
 
-        this.restClient = builder
+        this.restClient = RestClient.builder()
                 .baseUrl(baseUrl)
                 .build();
     }
